@@ -1,0 +1,22 @@
+[
+  {"id": "S1",  "name": "Sector 1 (Capitol)",  "lat": 30.7590, "lon": 76.8050},
+  {"id": "S8",  "name": "Sector 8",  "lat": 30.7420, "lon": 76.8010},
+  {"id": "S9",  "name": "Sector 9",  "lat": 30.7500, "lon": 76.7900},
+  {"id": "S10", "name": "Sector 10", "lat": 30.7530, "lon": 76.7850},
+  {"id": "S11", "name": "Sector 11", "lat": 30.7570, "lon": 76.7800},
+  {"id": "S15", "name": "Sector 15", "lat": 30.7470, "lon": 76.7730},
+  {"id": "S17", "name": "Sector 17", "lat": 30.7410, "lon": 76.7820},
+  {"id": "S22", "name": "Sector 22", "lat": 30.7340, "lon": 76.7720},
+  {"id": "S25", "name": "Sector 25", "lat": 30.7510, "lon": 76.7570},
+  {"id": "S26", "name": "Sector 26", "lat": 30.7330, "lon": 76.8060},
+  {"id": "S29", "name": "Sector 29", "lat": 30.7160, "lon": 76.7930},
+  {"id": "S34", "name": "Sector 34", "lat": 30.7240, "lon": 76.7700},
+  {"id": "S35", "name": "Sector 35", "lat": 30.7230, "lon": 76.7590},
+  {"id": "S38", "name": "Sector 38", "lat": 30.7380, "lon": 76.7470},
+  {"id": "S43", "name": "Sector 43", "lat": 30.7170, "lon": 76.7470},
+  {"id": "S44", "name": "Sector 44", "lat": 30.7090, "lon": 76.7560},
+  {"id": "S47", "name": "Sector 47", "lat": 30.7000, "lon": 76.7700},
+  {"id": "S53", "name": "Sector 53", "lat": 30.7000, "lon": 76.7390},
+  {"id": "IA1", "name": "Industrial Area Ph-1", "lat": 30.7050, "lon": 76.8000},
+  {"id": "MMJ", "name": "Manimajra", "lat": 30.7270, "lon": 76.8350}
+]

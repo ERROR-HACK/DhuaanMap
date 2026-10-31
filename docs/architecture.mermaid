@@ -1,0 +1,29 @@
+flowchart LR
+  subgraph Sources[Data Sources]
+    A[Open-Meteo Air Quality<br/>hourly PM2.5 per sector]
+    B[Open-Meteo Weather<br/>archive + forecast]
+    C[NASA FIRMS<br/>stubble fire points]
+    D[OpenStreetMap<br/>sector locations]
+  end
+  subgraph Pipeline[Python ML Pipeline]
+    E[fetch_data.py]
+    F[Features: Diwali timing, weather,<br/>fires within 200 km, upwind fires,<br/>hour, location]
+    G[LightGBM]
+    H[SHAP: Crackers / Stubble /<br/>Traffic / Weather]
+    I[past.json + forecast.json]
+  end
+  subgraph App[Web App]
+    J[FastAPI: /timeline /map /sector /whatif]
+    K[React + Leaflet]
+    L[Sector heatmap + adaptive slider]
+    M[Fire + wind overlay]
+    N[Source breakdown + trend chart]
+  end
+  A --> E
+  B --> E
+  C --> E
+  D --> E
+  E --> F --> G --> H --> I --> J --> K
+  K --> L
+  K --> M
+  K --> N

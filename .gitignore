@@ -1,0 +1,11 @@
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+dist/
+.DS_Store
+data/raw/*.csv
+model/lgbm.txt
+*.tsbuildinfo
