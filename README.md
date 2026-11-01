@@ -38,14 +38,6 @@ DhuaanMap is an interactive map of Chandigarh that shows **sector-by-sector AQI 
 | F6 | Past vs Forecast toggle | Diwali 2025 (actual) vs Diwali 2026 (predicted) |
 | F7 | AQI trend chart | Line chart of the selected sector across the ±5-day window, with Diwali marked |
 
-### 🟡 Stretch (if time allows)
-| # | Feature | Description |
-|---|---|---|
-| S1 | What-if simulator | Slider: "Reduce crackers by X%" or "Reduce stubble fires by X%" → updated AQI |
-| S2 | Safe-window planner | Best and worst hours to go outside for a selected sector |
-| S3 | Health advisory | Alerts for asthma patients, children and the elderly by AQI level |
-| S4 | Play/animate | Auto-play the slider to show smoke moving across days |
-
 ### ❌ Out of scope (tonight)
 Real-time traffic feeds, user accounts, mobile app, cities other than Chandigarh, IoT sensors.
 
