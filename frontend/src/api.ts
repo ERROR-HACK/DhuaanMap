@@ -104,10 +104,10 @@ function mapSnapshot(mode: Mode, data: ApiMapResponse): MapSnapshot {
       aqi: sector.aqi,
       sources: toPercentShares(sector.sources),
     })),
-    fires: data.fires.map((fire) => ({ lat: fire.lat, lng: fire.lon })),
+    fires: data.fires.map((fire) => ({ lat: fire.lat, lng: fire.lon, frp: fire.frp ?? 0 })),
     wind: {
-      degrees: data.wind.direction_deg,
-      speedKmh: data.wind.speed_kmh,
+      direction_deg: data.wind.direction_deg,
+      speed_kmh: data.wind.speed_kmh,
     },
   }
 }

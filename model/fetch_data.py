@@ -21,7 +21,7 @@ import requests
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "data" / "raw"
 RAW.mkdir(parents=True, exist_ok=True)
-SECTORS = json.loads((ROOT / "data" / "sectors.json").read_text())
+SECTORS = [s for s in json.loads((ROOT / "data" / "sectors.json").read_text()) if s.get("lat") is not None]
 
 CITY = (30.7333, 76.7794)
 DIWALI = {2022: "2022-10-24", 2023: "2023-11-12", 2024: "2024-10-31", 2025: "2025-10-20"}
@@ -96,19 +96,25 @@ def fetch_fires():
         return
     frames = []
     for year, day in DIWALI.items():
-        start, _ = window(day)
-        # FIRMS area API: up to 10 days per call -> two calls cover the 11-day window
-        for offset, days in ((0, 10), (10, 1)):
-            date = (pd.Timestamp(start) + pd.Timedelta(days=offset)).strftime("%Y-%m-%d")
-            for source in ("VIIRS_SNPP_SP", "VIIRS_SNPP_NRT"):
-                url = f"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{key}/{source}/{FIRMS_BBOX}/{days}/{date}"
-                r = requests.get(url, timeout=120)
+        start, end = window(day)
+        for date in pd.date_range(start, end).strftime("%Y-%m-%d"):
+            got = False
+            for source in ("VIIRS_SNPP_SP", "VIIRS_SNPP_NRT", "VIIRS_NOAA20_NRT", "MODIS_SP"):
+                url = f"https://firms.modaps.eosdis.nasa.gov/api/area/csv/{key}/{source}/{FIRMS_BBOX}/1/{date}"
+                try:
+                    r = requests.get(url, timeout=60)
+                except Exception:
+                    continue
                 if r.ok and r.text.startswith("latitude"):
                     df = pd.read_csv(io.StringIO(r.text))
-                    if len(df):
+                    if len(df) > 0:
                         frames.append(df[["latitude", "longitude", "acq_date", "frp"]])
-                        print(f"Fires {date} (+{days}d) {source}: {len(df)}")
+                        print(f"Fires {date} {source}: {len(df)}")
+                        got = True
                         break
+            if not got:
+                print(f"Fires {date}: none/failed")
+            time.sleep(0.5)
     if frames:
         out = pd.concat(frames, ignore_index=True).drop_duplicates()
         out.to_csv(RAW / "fires.csv", index=False)

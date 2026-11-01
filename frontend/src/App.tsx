@@ -47,6 +47,7 @@ export default function App() {
       .then((data) => {
         if (!active) return
         setSnapshot(data)
+        console.log("fires", data.fires.length)
         setError(null)
       })
       .catch(() => {

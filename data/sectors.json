@@ -1,22 +1,362 @@
 [
-  {"id": "S1",  "name": "Sector 1 (Capitol)",  "lat": 30.7590, "lon": 76.8050},
-  {"id": "S8",  "name": "Sector 8",  "lat": 30.7420, "lon": 76.8010},
-  {"id": "S9",  "name": "Sector 9",  "lat": 30.7500, "lon": 76.7900},
-  {"id": "S10", "name": "Sector 10", "lat": 30.7530, "lon": 76.7850},
-  {"id": "S11", "name": "Sector 11", "lat": 30.7570, "lon": 76.7800},
-  {"id": "S15", "name": "Sector 15", "lat": 30.7470, "lon": 76.7730},
-  {"id": "S17", "name": "Sector 17", "lat": 30.7410, "lon": 76.7820},
-  {"id": "S22", "name": "Sector 22", "lat": 30.7340, "lon": 76.7720},
-  {"id": "S25", "name": "Sector 25", "lat": 30.7510, "lon": 76.7570},
-  {"id": "S26", "name": "Sector 26", "lat": 30.7330, "lon": 76.8060},
-  {"id": "S29", "name": "Sector 29", "lat": 30.7160, "lon": 76.7930},
-  {"id": "S34", "name": "Sector 34", "lat": 30.7240, "lon": 76.7700},
-  {"id": "S35", "name": "Sector 35", "lat": 30.7230, "lon": 76.7590},
-  {"id": "S38", "name": "Sector 38", "lat": 30.7380, "lon": 76.7470},
-  {"id": "S43", "name": "Sector 43", "lat": 30.7170, "lon": 76.7470},
-  {"id": "S44", "name": "Sector 44", "lat": 30.7090, "lon": 76.7560},
-  {"id": "S47", "name": "Sector 47", "lat": 30.7000, "lon": 76.7700},
-  {"id": "S53", "name": "Sector 53", "lat": 30.7000, "lon": 76.7390},
-  {"id": "IA1", "name": "Industrial Area Ph-1", "lat": 30.7050, "lon": 76.8000},
-  {"id": "MMJ", "name": "Manimajra", "lat": 30.7270, "lon": 76.8350}
+ {
+  "id": "S1",
+  "name": "Sector 1 (Capitol)",
+  "lat": 30.76116,
+  "lon": 76.80215
+ },
+ {
+  "id": "S2",
+  "name": "Sector 2",
+  "lat": 30.76379,
+  "lon": 76.79137
+ },
+ {
+  "id": "S3",
+  "name": "Sector 3",
+  "lat": 30.75829,
+  "lon": 76.79616
+ },
+ {
+  "id": "S4",
+  "name": "Sector 4",
+  "lat": 30.75186,
+  "lon": 76.80141
+ },
+ {
+  "id": "S5",
+  "name": "Sector 5",
+  "lat": 30.74556,
+  "lon": 76.80678
+ },
+ {
+  "id": "S6",
+  "name": "Sector 6",
+  "lat": 30.73903,
+  "lon": 76.81245
+ },
+ {
+  "id": "S7",
+  "name": "Sector 7",
+  "lat": 30.73587,
+  "lon": 76.80428
+ },
+ {
+  "id": "S8",
+  "name": "Sector 8",
+  "lat": 30.7417,
+  "lon": 76.79945
+ },
+ {
+  "id": "S9",
+  "name": "Sector 9",
+  "lat": 30.7474,
+  "lon": 76.79393
+ },
+ {
+  "id": "S10",
+  "name": "Sector 10",
+  "lat": 30.75419,
+  "lon": 76.78896
+ },
+ {
+  "id": "S11",
+  "name": "Sector 11",
+  "lat": 30.75987,
+  "lon": 76.7845
+ },
+ {
+  "id": "S12",
+  "name": "Sector 12",
+  "lat": 30.7644,
+  "lon": 76.77885
+ },
+ {
+  "id": "S14",
+  "name": "Sector 14",
+  "lat": 30.75985,
+  "lon": 76.76683
+ },
+ {
+  "id": "S15",
+  "name": "Sector 15",
+  "lat": 30.75299,
+  "lon": 76.77265
+ },
+ {
+  "id": "S16",
+  "name": "Sector 16",
+  "lat": 30.74676,
+  "lon": 76.77752
+ },
+ {
+  "id": "S17",
+  "name": "Sector 17",
+  "lat": 30.74007,
+  "lon": 76.78259
+ },
+ {
+  "id": "S18",
+  "name": "Sector 18",
+  "lat": 30.7345,
+  "lon": 76.78825
+ },
+ {
+  "id": "S19",
+  "name": "Sector 19",
+  "lat": 30.7283,
+  "lon": 76.79306
+ },
+ {
+  "id": "S20",
+  "name": "Sector 20",
+  "lat": 30.72118,
+  "lon": 76.78158
+ },
+ {
+  "id": "S21",
+  "name": "Sector 21",
+  "lat": 30.7269,
+  "lon": 76.77654
+ },
+ {
+  "id": "S22",
+  "name": "Sector 22",
+  "lat": 30.73343,
+  "lon": 76.77135
+ },
+ {
+  "id": "S23",
+  "name": "Sector 23",
+  "lat": 30.73992,
+  "lon": 76.7662
+ },
+ {
+  "id": "S24",
+  "name": "Sector 24",
+  "lat": 30.74578,
+  "lon": 76.76173
+ },
+ {
+  "id": "S25",
+  "name": "Sector 25",
+  "lat": 30.75165,
+  "lon": 76.75673
+ },
+ {
+  "id": "S26",
+  "name": "Sector 26",
+  "lat": 30.73001,
+  "lon": 76.80911
+ },
+ {
+  "id": "S27",
+  "name": "Sector 27",
+  "lat": 30.72275,
+  "lon": 76.79842
+ },
+ {
+  "id": "S28",
+  "name": "Sector 28",
+  "lat": 30.71719,
+  "lon": 76.80372
+ },
+ {
+  "id": "S29",
+  "name": "Sector 29",
+  "lat": 30.71026,
+  "lon": 76.79242
+ },
+ {
+  "id": "S30",
+  "name": "Sector 30",
+  "lat": 30.71568,
+  "lon": 76.78697
+ },
+ {
+  "id": "S31",
+  "name": "Sector 31",
+  "lat": 30.70288,
+  "lon": 76.78109
+ },
+ {
+  "id": "S32",
+  "name": "Sector 32",
+  "lat": 30.70839,
+  "lon": 76.77529
+ },
+ {
+  "id": "S33",
+  "name": "Sector 33",
+  "lat": 30.71413,
+  "lon": 76.77014
+ },
+ {
+  "id": "S34",
+  "name": "Sector 34",
+  "lat": 30.71992,
+  "lon": 76.76521
+ },
+ {
+  "id": "S35",
+  "name": "Sector 35",
+  "lat": 30.72612,
+  "lon": 76.75989
+ },
+ {
+  "id": "S36",
+  "name": "Sector 36",
+  "lat": 30.73247,
+  "lon": 76.75491
+ },
+ {
+  "id": "S37",
+  "name": "Sector 37",
+  "lat": 30.73853,
+  "lon": 76.75034
+ },
+ {
+  "id": "S38",
+  "name": "Sector 38",
+  "lat": 30.74468,
+  "lon": 76.74577
+ },
+ {
+  "id": "S39",
+  "name": "Sector 39",
+  "lat": 30.74374,
+  "lon": 76.73028
+ },
+ {
+  "id": "S40",
+  "name": "Sector 40",
+  "lat": 30.73798,
+  "lon": 76.7354
+ },
+ {
+  "id": "S41",
+  "name": "Sector 41",
+  "lat": 30.73254,
+  "lon": 76.7378
+ },
+ {
+  "id": "S42",
+  "name": "Sector 42",
+  "lat": 30.72608,
+  "lon": 76.74315
+ },
+ {
+  "id": "S43",
+  "name": "Sector 43",
+  "lat": 30.71909,
+  "lon": 76.74879
+ },
+ {
+  "id": "S44",
+  "name": "Sector 44",
+  "lat": 30.7129,
+  "lon": 76.75411
+ },
+ {
+  "id": "S45",
+  "name": "Sector 45",
+  "lat": 30.70659,
+  "lon": 76.75693
+ },
+ {
+  "id": "S46",
+  "name": "Sector 46",
+  "lat": 30.7014,
+  "lon": 76.76423
+ },
+ {
+  "id": "S47",
+  "name": "Sector 47",
+  "lat": 30.69581,
+  "lon": 76.76905
+ },
+ {
+  "id": "S48",
+  "name": "Sector 48",
+  "lat": 30.68794,
+  "lon": 76.75732
+ },
+ {
+  "id": "S49",
+  "name": "Sector 49",
+  "lat": 30.69403,
+  "lon": 76.75214
+ },
+ {
+  "id": "S50",
+  "name": "Sector 50",
+  "lat": 30.7,
+  "lon": 76.74775
+ },
+ {
+  "id": "S51",
+  "name": "Sector 51",
+  "lat": 30.70562,
+  "lon": 76.74276
+ },
+ {
+  "id": "S52",
+  "name": "Sector 52",
+  "lat": 30.71217,
+  "lon": 76.73725
+ },
+ {
+  "id": "S53",
+  "name": "Sector 53",
+  "lat": 30.71924,
+  "lon": 76.73215
+ },
+ {
+  "id": "S54",
+  "name": "Sector 54",
+  "lat": 30.72608,
+  "lon": 76.72921
+ },
+ {
+  "id": "S55",
+  "name": "Sector 55",
+  "lat": 30.73008,
+  "lon": 76.72283
+ },
+ {
+  "id": "S56",
+  "name": "Sector 56",
+  "lat": 30.73665,
+  "lon": 76.7189
+ },
+ {
+  "id": "S61",
+  "name": "Sector 61",
+  "lat": 30.70889,
+  "lon": 76.73076
+ },
+ {
+  "id": "S63",
+  "name": "Sector 63",
+  "lat": 30.69297,
+  "lon": 76.73648
+ },
+ {
+  "id": "MMJ",
+  "name": "Manimajra",
+  "lat": 30.71275,
+  "lon": 76.83294
+ },
+ {
+  "id": "IA1",
+  "name": "Industrial Area Ph-1",
+  "lat": 30.7054,
+  "lon": 76.80096
+ },
+ {
+  "id": "IA2",
+  "name": "Industrial Area Ph-2",
+  "lat": 30.69813,
+  "lon": 76.78801
+ }
 ]

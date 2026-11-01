@@ -1,25 +1,21 @@
-import { useMemo } from 'react'
+import { useMemo, useRef, useEffect, useState } from 'react'
 import { divIcon } from 'leaflet'
-import { Circle, CircleMarker, MapContainer, Marker, TileLayer, Tooltip } from 'react-leaflet'
+import { CircleMarker, GeoJSON, MapContainer, Marker, TileLayer } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import { getAqiCategory } from '../aqi'
-import type { MapSnapshot, Wind } from '../types'
+import type { MapSnapshot } from '../types'
 
 const CENTER: [number, number] = [30.7333, 76.7794]
-const WIND_MARKER_POSITION: [number, number] = [30.795, 76.69]
-const SECTOR_RADIUS_METERS = 1500
-const FIRE_COLOR = '#ff3b3b'
-const TILE_URL = 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
+const FIRE_COLOR = '#ff5a1f'
+const CARTO_KEY = import.meta.env.VITE_CARTO_KEY as string | undefined
+const TILE_URL = CARTO_KEY
+  ? `https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png?key=${CARTO_KEY}`
+  : 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
 const TILE_ATTRIBUTION =
   '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>'
 
-function windMarkerHtml({ degrees, speedKmh }: Wind): string {
-  return `<div class="flex flex-col items-center gap-1">
-    <svg width="36" height="36" viewBox="0 0 36 36" style="transform: rotate(${degrees}deg)">
-      <path d="M18 3 L28 20 L18 16 L8 20 Z" fill="#4ade80" stroke="#052e16" stroke-width="1" />
-    </svg>
-    <span class="rounded bg-zinc-900/90 px-1.5 py-0.5 text-[11px] font-semibold text-green-300">${speedKmh} km/h</span>
-  </div>`
+function aqiLabelHtml(aqi: number): string {
+  return `<div class="aqi-label" style="color: white; font-weight: bold; font-size: 14px; text-shadow: 0 0 3px rgba(0,0,0,0.8); pointer-events: none;">${aqi}</div>`
 }
 
 interface MapViewProps {
@@ -29,41 +25,131 @@ interface MapViewProps {
 }
 
 export function MapView({ snapshot, selectedId, onSelect }: MapViewProps) {
-  const windIcon = useMemo(
-    () =>
-      snapshot
-        ? divIcon({
-            className: 'wind-marker',
-            html: windMarkerHtml(snapshot.wind),
-            iconSize: [80, 64],
-            iconAnchor: [40, 32],
-          })
-        : null,
-    [snapshot],
-  )
+  const geoJsonRef = useRef<any>(null)
+  const [geoJsonData, setGeoJsonData] = useState<any>(null)
+  
+  const snapshotRef = useRef(snapshot)
+  const selectedIdRef = useRef(selectedId)
+  const onSelectRef = useRef(onSelect)
+  
+  useEffect(() => {
+    snapshotRef.current = snapshot
+    selectedIdRef.current = selectedId
+    onSelectRef.current = onSelect
+  })
+
+  useEffect(() => {
+    fetch('/sectors.geojson')
+      .then((res) => res.json())
+      .then(setGeoJsonData)
+  }, [])
+
+  useEffect(() => {
+    if (!geoJsonRef.current || !snapshot) return
+
+    geoJsonRef.current.eachLayer((layer: any) => {
+      const feature = layer.feature
+      const sectorId = feature.properties?.id
+      const sector = snapshot.sectors.find((s) => s.id === sectorId)
+      if (!sector) return
+
+      const category = getAqiCategory(sector.aqi)
+      const selected = sectorId === selectedId
+
+      layer.setStyle({
+        color: 'white',
+        fillColor: category.color,
+        fillOpacity: selected ? 0.8 : 0.55,
+        weight: 1,
+        opacity: 0.4,
+      })
+    })
+  }, [snapshot, selectedId])
+
+
+  const onEachFeature = (feature: any, layer: any) => {
+    const sectorId = feature.properties?.id
+    
+    layer.on({
+      click: () => {
+        const handler = onSelectRef.current
+        if (handler) handler(sectorId)
+      },
+      mouseover: (e: any) => {
+        const snap = snapshotRef.current
+        if (!snap) return
+        const sector = snap.sectors.find((s: any) => s.id === sectorId)
+        if (!sector) return
+        
+        const category = getAqiCategory(sector.aqi)
+        e.target.setStyle({ fillOpacity: 0.7 })
+        
+        layer.bindTooltip(`${sector.name} · AQI ${sector.aqi} · ${category.label}`, { sticky: true })
+        layer.openTooltip()
+      },
+      mouseout: (e: any) => {
+        const selId = selectedIdRef.current
+        const selected = sectorId === selId
+        e.target.setStyle({ fillOpacity: selected ? 0.8 : 0.55 })
+        layer.closeTooltip()
+      },
+    })
+  }
+
+  const polygonCenters = useMemo(() => {
+    if (!geoJsonData) return {}
+    const centers: Record<string, [number, number]> = {}
+    geoJsonData.features.forEach((feature: any) => {
+      if (feature.geometry?.type !== 'Polygon') return
+      const coords = feature.geometry.coordinates[0]
+      const lng = coords.reduce((sum: number, c: number[]) => sum + c[0], 0) / coords.length
+      const lat = coords.reduce((sum: number, c: number[]) => sum + c[1], 0) / coords.length
+      centers[feature.properties.id] = [lat, lng]
+    })
+    return centers
+  }, [geoJsonData])
 
   return (
     <MapContainer center={CENTER} zoom={12} scrollWheelZoom className="isolate h-full w-full bg-zinc-950">
-      <TileLayer url={TILE_URL} attribution={TILE_ATTRIBUTION} />
+      <TileLayer
+        url={TILE_URL}
+        attribution={TILE_ATTRIBUTION}
+        subdomains="abcd"
+        maxZoom={20}
+      />
+
+      {geoJsonData && (
+        <GeoJSON
+          data={geoJsonData}
+          ref={geoJsonRef}
+          onEachFeature={onEachFeature}
+          style={{
+            color: 'white',
+            weight: 1,
+            opacity: 0.4,
+          }}
+          interactive={true}
+          pane="overlayPane"
+        />
+      )}
 
       {snapshot?.sectors.map((sector) => {
-        const category = getAqiCategory(sector.aqi)
-        const selected = sector.id === selectedId
+        const center = polygonCenters[sector.id]
+        if (!center) return null
+        const labelIcon = divIcon({
+          className: 'aqi-label',
+          html: aqiLabelHtml(sector.aqi),
+          iconSize: [40, 20],
+          iconAnchor: [20, 10],
+        })
         return (
-          <Circle
-            key={sector.id}
-            center={[sector.lat, sector.lng]}
-            radius={SECTOR_RADIUS_METERS}
-            pathOptions={{
-              color: category.color,
-              fillColor: category.color,
-              fillOpacity: selected ? 0.8 : 0.55,
-              weight: selected ? 3 : 1,
-            }}
-            eventHandlers={{ click: () => onSelect(sector.id) }}
-          >
-            <Tooltip sticky>{`${sector.name} · AQI ${sector.aqi}`}</Tooltip>
-          </Circle>
+          <Marker
+            key={`label-${sector.id}`}
+            position={center}
+            icon={labelIcon}
+            interactive={false}
+            pane="overlayPane"
+          />
         )
       })}
 
@@ -72,12 +158,30 @@ export function MapView({ snapshot, selectedId, onSelect }: MapViewProps) {
           key={`${fire.lat}-${fire.lng}`}
           center={[fire.lat, fire.lng]}
           radius={5}
-          pathOptions={{ color: FIRE_COLOR, fillColor: FIRE_COLOR, fillOpacity: 0.95, weight: 1 }}
+          pathOptions={{ color: FIRE_COLOR, fillColor: FIRE_COLOR, fillOpacity: 0.9, weight: 1 }}
           interactive={false}
+          pane="tooltipPane"
         />
       ))}
 
-      {windIcon && <Marker position={WIND_MARKER_POSITION} icon={windIcon} interactive={false} />}
+      {snapshot && (
+        <div className="absolute top-4 right-4 z-[1000] flex flex-col items-center gap-1 rounded-full bg-zinc-900/90 p-2 shadow-lg">
+          <div className="text-[10px] font-semibold text-zinc-400 uppercase tracking-wider">Wind</div>
+          <div className="relative h-[60px] w-[60px] rounded-full border-2 border-zinc-600">
+            <svg
+              className="absolute inset-0 h-full w-full"
+              viewBox="0 0 60 60"
+              style={{ transform: `rotate(${snapshot.wind.direction_deg + 180}deg)` }}
+            >
+              <path d="M30 8 L40 28 L30 24 L20 28 Z" fill="#f97316" stroke="#7c2d12" strokeWidth="1" />
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-xs font-bold text-zinc-300">N</span>
+            </div>
+          </div>
+          <div className="text-[11px] font-semibold text-orange-300">{snapshot.wind.speed_kmh} km/h</div>
+        </div>
+      )}
     </MapContainer>
   )
 }

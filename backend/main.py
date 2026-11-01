@@ -17,7 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 ROOT = Path(__file__).resolve().parents[1]
 PROC = ROOT / "data" / "processed"
-SECTORS = json.loads((ROOT / "data" / "sectors.json").read_text())
+SECTORS = [s for s in json.loads((ROOT / "data" / "sectors.json").read_text()) if s.get("lat") is not None]
 DIWALI = {"past": "2025-10-20", "forecast": "2026-11-08"}
 Mode = Literal["past", "forecast"]
 
@@ -80,6 +80,15 @@ def parse_time(s: str) -> datetime:
 def health():
     return {"status": "ok", "past_is_mock": load("past").get("mock", False),
             "forecast_is_mock": load("forecast").get("mock", False)}
+
+
+@app.get("/sectors/geojson")
+def sectors_geojson():
+    """Sector polygons made by scripts/sector_polygons.py."""
+    p = ROOT / "data" / "sectors.geojson"
+    if not p.exists():
+        raise HTTPException(404, "Run scripts/sector_polygons.py first")
+    return json.loads(p.read_text())
 
 
 @app.get("/timeline")

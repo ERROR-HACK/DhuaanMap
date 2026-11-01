@@ -19,11 +19,12 @@ export interface SectorReading {
 export interface FireSpot {
   lat: number
   lng: number
+  frp: number
 }
 
 export interface Wind {
-  degrees: number
-  speedKmh: number
+  direction_deg: number
+  speed_kmh: number
 }
 
 export interface MapSnapshot {
